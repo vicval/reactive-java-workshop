@@ -24,7 +24,15 @@ public class Exercise1 {
         StreamSources.userStream().map(t -> t.getFirstName()).forEach(System.out::println);
 
         // Print first names in userStream for users that have IDs from number stream
-        StreamSources.intNumbersStream().flatMap(id -> StreamSources.userStream().filter(user -> user.getId() == id)).forEach(System.out::println);
+        StreamSources.intNumbersStream()
+                .flatMap(id -> StreamSources.userStream()
+                        .filter(user -> user.getId() == id))
+                .forEach(t -> System.out.println(t.getFirstName()));
+//BEST SOLUTION, BECAUSE IF THERE IS NO VALUE
+        StreamSources.userStream()
+                .filter(t -> StreamSources.intNumbersStream()
+                        .anyMatch(i -> i == t.getId()))
+                .forEach(t -> System.out.println(t.getFirstName()));
 
     }
 
